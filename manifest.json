@@ -1,0 +1,22 @@
+{
+	"name": "LSMemo",
+	"version": "1.0",
+	"description": "localStorage Memo",
+	"icons": {
+		"32": "img/icon32.png",
+		"48": "img/icon48.png",
+		"128": "img/icon128.png"
+	},
+	"browser_action":{
+		"default_icon": "img/icon128.png"
+	},
+	"background_page": "background.html",
+	"options_page": "options.html",
+	"content_scripts": [
+		{
+			"matches": ["http://*/*","https://*/*"],
+			"css": ["css/LSMemo.css"],
+			"js": ["js/LSMemo.Model.js","js/LSMemo.View.js","js/LSMemo.Ctr.js","js/LSMemo.js"]
+		}
+	]
+}

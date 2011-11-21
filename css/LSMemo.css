@@ -1,0 +1,59 @@
+/* 01. LSMemo
+---------------------------------------------------	*/
+#LSMemo{
+	margin:0;
+	padding:10px;
+	position:fixed;
+	top:0;
+	left:0;
+	z-index:1000;
+	text-align:left;
+}
+#LSMemo textarea{
+	padding:10px;
+	width:300px;
+	height:100px;
+	background:rgba(255, 255, 255, 0.95);
+	line-height:1.6;
+}
+
+/* 02. #options
+---------------------------------------------------	*/
+#options ul{
+	list-style:none;
+}
+#options li{
+	margin:0 30px 10px 0;
+}
+#options fieldset{
+	width:50%;
+}
+#options input{
+	padding:5px;
+}
+#options textarea{
+	padding:10px;
+	width:100%;
+	min-height:100px;
+}
+
+/* 03. common
+---------------------------------------------------	*/
+#LSMemo .ctr,
+#options .ctr{
+	margin:0 0 10px 0;
+}
+#LSMemo .ctr li,
+#options .ctr li{
+	padding:10px;
+	width:100px;
+	-webkit-border-radius:4px; /* Saf3-4, iOS 1-3.2, Android <1.6 */
+	border-radius:4px; /* Opera 10.5, IE9, Saf5, Chrome, FF4, iOS 4, Android 2.1+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(204,204,204,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: linear-gradient(top,  rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%); /* W3C */
+	text-align:center;
+	color:#666;
+	font-weight:bold;
+	cursor:pointer;
+}
