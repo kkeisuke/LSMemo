@@ -12,8 +12,7 @@
 		this.model = null;
 		this.optId = null;
 		this.option = {
-			numMemo:1,
-			domains:""
+			//初期値など
 		};
 		this._extends(option);
 		this._init();
@@ -39,16 +38,13 @@
 		_init:function(){
 			if(LSMemo.Model === undefined){ return; }
 			
-			this.model = new LSMemo.Model();
-			for(var key in this.option){
-				this.toConfig(key, this.option[key]);
-			}
+			this.model = new LSMemo.Model({ls:window.localStorage});
+			this.toConfig(LSMemo.Model.NUM_MEMO);
 			this.optId = document.getElementById("options");
 			this.addEvent();
 		},
-		toConfig:function(id, def){
-			var val = this.model.getConfig(id);
-			document.getElementById(id).value = (val !== undefined) ? val : def;
+		toConfig:function(id){
+			document.getElementById(id).value = this.model.getConfig(id);
 		},
 		setConfig:function(id){
 			this.model.setConfig(id, document.getElementById(id).value, false);
@@ -56,9 +52,7 @@
 		addEvent:function(){
 			var that = this;
 			this.optId.querySelector(".saveBtn").addEventListener("click", function(e){
-				for(var key in that.option){
-					that.setConfig.call(that, key);
-				}
+				that.setConfig.call(that, LSMemo.Model.NUM_MEMO);
 				that.model.setData();
 			}, false);
 		}

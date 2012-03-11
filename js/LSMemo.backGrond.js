@@ -1,7 +1,13 @@
 (function(window, document, undefined){
 	
+	var key = "LSMemo";
+	
 	chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-		sendResponse({setting:window.localStorage});
+		if(request === null){
+			sendResponse(JSON.parse(window.localStorage.getItem(key)));
+		}else{
+			window.localStorage.setItem(key, JSON.stringify(request));
+		}
 	});
 	
 	chrome.browserAction.onClicked.addListener(function(tab){

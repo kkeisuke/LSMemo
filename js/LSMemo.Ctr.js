@@ -37,17 +37,20 @@
 		_init:function(){
 			if(!(LSMemo.Model && LSMemo.View)){ return; }
 			
+			var that = this;
 			this.model = new LSMemo.Model();
-			var opt = this.model.getData()[LSMemo.Model.DISPLAY];
-			this.view = new LSMemo.View({
-				display:opt||"block"
+			this.model.loadData(function(data){
+				that.view = new LSMemo.View({
+					display:data[LSMemo.Model.DISPLAY] || "block"
+				});
+				that.setRequest.call(that);
+				that.setMemo.call(that, data[LSMemo.Model.NUM_MEMO] || 1);
 			});
-			this.setRequest();
 		},
 		setMemo:function(num){
 			var obj;
 			for (var i=0; i < num; i++) {
-			  obj = this.model.getObj(i);
+			  obj = this.model.getMemoObj(i);
 			  if(obj){
 			  	this.view.createMemo(i, obj.val, obj.w, obj.h);
 			  }else{
@@ -55,7 +58,6 @@
 			  	this.view.createMemo(i, null, null, null);
 			  }
 			};
-			
 			this.setView();
 		},
 		setView:function(){
@@ -89,14 +91,35 @@
 		setRequest:function(){
 			var that = this;
 			chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
-				sendResponse({});
 				that.model.setConfig(LSMemo.Model.DISPLAY, that.view.setDisplay(), true);
 			});
 		},
-		backUpFile:function(text){
+		backUpFile:function(/*name,*/text){
 			var blobBuilder = new WebKitBlobBuilder();
 			blobBuilder.append(text);
 			location.href = window.webkitURL.createObjectURL(blobBuilder.getBlob());
+			/* var hoge = 0;
+			var errorCallback = function(e){
+				console.log(hoge);
+				hoge++;
+				console.log(e);
+			};
+			
+			window.webkitRequestFileSystem(window.PERSISTENT, 1024*1024, function(fs){
+				console.log(fs)
+				fs.root.getFile(name + '.txt', {create:true}, function(fileEntry) {
+					fileEntry.createWriter(function(fileWriter) {
+						fileWriter.onwriteend = function(e){
+							console.log(fileWriter);
+							//window.alert("end");
+						};
+						fileWriter.onerror = function(e){
+							//window.alert("error");
+						};
+						fileWriter.write(blobBuilder.getBlob('text/plain'));
+					},errorCallback);
+				},errorCallback);
+			},errorCallback); */
 		}
 	};
 	

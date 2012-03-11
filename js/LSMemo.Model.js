@@ -10,11 +10,12 @@
 	 */
 	LSMemo.Model = function(option){
 		this.obj = {
-			LSMemo:[]
+			LSMemo:[],
+			numMemo:1,
+			display:"block"
 		};
-		this.ls = window.localStorage;
 		this.option = {
-			//初期値など
+			ls:null
 		};
 		this._extends(option);
 		this._init();
@@ -24,7 +25,11 @@
 	 * クラスメンバー
 	 */
 	LSMemo.Model.KEY = "LSMemo";
+	LSMemo.Model.NUM_MEMO = "numMemo";
 	LSMemo.Model.DISPLAY = "display";
+	LSMemo.Model.event = {
+		LOADED_DATA:"loaded_data"
+	};
 	
 	/**
 	 * インスタンスメソッド
@@ -38,7 +43,18 @@
 			}
 		},
 		_init:function(){
-			var obj = this.getData();
+			if(this.option.ls){
+				this._setUp(this.getData());
+			}
+		},
+		loadData:function(callback){
+			var that = this;
+			chrome.extension.sendRequest(null, function(response){
+				that._setUp.call(that, response);
+				callback.call(that, that.obj);
+			});
+		},
+		_setUp:function(obj){
 			if(obj){
 				this.obj = obj;
 			}else{
@@ -46,16 +62,24 @@
 			}
 		},
 		getData:function() {
-		  return JSON.parse(this.ls.getItem(LSMemo.Model.KEY));
+			if(this.option.ls){
+				return JSON.parse(this.option.ls.getItem(LSMemo.Model.KEY));
+			}else{
+				return this.obj;
+			}
 		},
 		setData:function(){
-			this.ls.setItem(LSMemo.Model.KEY, JSON.stringify(this.obj));
+			if(this.option.ls){
+				this.option.ls.setItem(LSMemo.Model.KEY, JSON.stringify(this.obj));
+			}else{
+				chrome.extension.sendRequest(this.obj);
+			}
 		},
-		getObj:function(index){
+		getMemoObj:function(index){
 			return this.obj[LSMemo.Model.KEY][index];
 		},
 		updateMemoObj:function(index,val,w,h){
-			var memo = this.getObj(index);
+			var memo = this.getMemoObj(index);
 			if(memo){
 				memo.val = val;
 				memo.w = w;
@@ -79,7 +103,7 @@
 		},
 		getConfig:function(key){
 			return this.obj[key];
-		},
+		}
 	};
 	
 	// インスタンスを生成する。

@@ -18,5 +18,6 @@
 			"css": ["css/LSMemo.css"],
 			"js": ["js/LSMemo.Model.js","js/LSMemo.View.js","js/LSMemo.Ctr.js","js/LSMemo.js"]
 		}
-	]
+	]/* ,
+	"permissions": ["unlimitedStorage"] */
 }

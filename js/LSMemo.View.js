@@ -50,6 +50,25 @@
 			this.area.style.display = this.option.display;
 			this.area.insertAdjacentHTML("afterbegin", LSMemo.View.BTNS);
 			
+			/* var reader = new FileReader();
+			reader.onload = function(e){
+				console.log(e.target.result);
+			};
+			reader.readAsText(new File(chrome.extension.getURL("template/area.html")), "utf-8"); */
+			
+			/* window.webkitRequestFileSystem(window.TEMPORARY, 1024*1024, function(fs){
+				fs.root.getFile(chrome.extension.getURL("template/area.html"), {}, function(fileEntry){
+					console.log(fileEntry)
+					fileEntry.file(function(file){
+						var reader = new FileReader();
+						reader.onloadend = function(e){
+							console.log(e);
+						};
+						reader.readAsText(file, "utf-8");
+					});
+				});
+			}); */
+			
 			this.fragment.appendChild(this.area);
 		},
 		createMemo:function(index,val,w,h){
@@ -61,10 +80,10 @@
 			if(h){ style.height = h; }
 			var that = this;
 			memo.addEventListener("change", function(){
-				that.area.dispatchEvent(that.createEvent.call(that, LSMemo.View.event.CHANGE, memo));
+				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.CHANGE, memo));
 			}, false);
 			memo.addEventListener("mouseup", function(){
-				that.area.dispatchEvent(that.createEvent.call(that, LSMemo.View.event.CHANGE, memo));
+				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.CHANGE, memo));
 			}, false);
 			this.area.appendChild(memo);
 		},
@@ -75,10 +94,10 @@
 		setBtnEvent:function(){
 			var that = this;
 			this.area.querySelector(".backupBtn").addEventListener("click", function(e){
-				that.area.dispatchEvent(that.createEvent.call(that, LSMemo.View.event.BACK_UP, that.area.getElementsByTagName("textarea")));
+				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.BACK_UP, that.area.getElementsByTagName("textarea")));
 			}, false);
 		},
-		createEvent:function(name, data){
+		_createEvent:function(name, data){
 			var evt = document.createEvent("CustomEvent");
 			evt.initCustomEvent(name, false, true, data);
 			return evt;
