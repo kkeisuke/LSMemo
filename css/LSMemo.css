@@ -6,7 +6,7 @@
 	position:fixed;
 	top:0;
 	left:0;
-	background:rgba(255, 255, 255, 0.8);
+	/* background:rgba(255, 255, 255, 0.8); */
 	z-index:1000;
 	text-align:left;
 }
@@ -15,7 +15,7 @@
 	padding:10px;
 	width:300px;
 	height:100px;
-	background:rgba(255, 255, 255, 0.8);
+	background:rgba(255, 255, 255, 0.85);
 	border:1px solid #ccc;
 	border-radius:4px;
 	box-shadow:0 0 0px #666;
@@ -67,12 +67,15 @@
 	margin:0;
 	padding:10px;
 	width:100px;
-	border-radius:4px;
-	background:-webkit-linear-gradient(top, rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%);
-	background:linear-gradient(top, rgba(238,238,238,1) 0%, rgba(204,204,204,1) 100%);
+	border:1px solid #646464;
+	border-radius:3px;
+	background-color: #7d7e7d;
+	background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
+	background-image: linear-gradient(top, #7d7e7d, #0e0e0e);
 	box-shadow:0 1px 2px #666;
 	text-align:center;
-	color:#666;
+    text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+    color: #FFFFFF;
 	font-family:Arial,sans-serif;
 	font-size:13px;
 	line-height:1.2;
@@ -86,4 +89,11 @@
 	position: relative;
 	top: 1px;
 	box-shadow: 0 0 1px #666;
+}
+#LSMemo .ctr li:hover,
+#options .ctr li:hover{
+	 border:1px solid #646464;
+	 background-color: #646464;
+	 background-image: -webkit-linear-gradient(top, #646464, #282828);
+	 background-image: linear-gradient(top, #646464, #282828);
 }
