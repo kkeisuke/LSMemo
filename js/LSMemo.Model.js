@@ -49,7 +49,7 @@
 		},
 		loadData:function(callback){
 			var that = this;
-			chrome.extension.sendRequest(null, function(response){
+			chrome.extension.sendRequest(LSMemo.Model.KEY, function(response){
 				that._setUp.call(that, response);
 				callback.call(that, that.obj);
 			});

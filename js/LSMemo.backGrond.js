@@ -3,7 +3,7 @@
 	var key = "LSMemo";
 	
 	chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
-		if(request === null){
+		if(request === key){
 			sendResponse(JSON.parse(window.localStorage.getItem(key)));
 		}else{
 			window.localStorage.setItem(key, JSON.stringify(request));
