@@ -25,9 +25,17 @@
 	LSMemo.View.DATA_INDEX = "data-index";
 	LSMemo.View.event = {
 		CHANGE:"ChangeMemo",
+		SAVE:"Save",
+		RELOAD:"Reload",
 		BACK_UP:"BackUP"
 	};
-	LSMemo.View.BTNS = '<ul class="ctr"><li class="backupBtn">Back Up</li></ul>';
+	LSMemo.View.BTNS = [
+		'<ul class="ctr">',
+			'<li class="backupBtn">Back Up</li>',
+			'<li class="saveBtn">Save</li>',
+			'<li class="reloadBtn">Reload</li>',
+		'</ul>'
+	];
 	
 	/**
 	 * インスタンスメソッド
@@ -48,7 +56,7 @@
 			this.area = document.createElement("div");
 			this.area.id = LSMemo.View.ID;
 			this.area.style.display = this.option.display;
-			this.area.insertAdjacentHTML("afterbegin", LSMemo.View.BTNS);
+			this.area.insertAdjacentHTML("afterbegin", LSMemo.View.BTNS.join(""));
 			
 			/* var reader = new FileReader();
 			reader.onload = function(e){
@@ -78,6 +86,7 @@
 			var style = memo.style;
 			if(w){ style.width = w; }
 			if(h){ style.height = h; }
+			/*
 			var that = this;
 			memo.addEventListener("change", function(){
 				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.CHANGE, memo));
@@ -85,7 +94,16 @@
 			memo.addEventListener("mouseup", function(){
 				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.CHANGE, memo));
 			}, false);
+			*/
 			this.area.appendChild(memo);
+		},
+		setAllMemo:function(datas){
+			var memos = this.area.getElementsByTagName("textarea");
+			for (var i = 0, num = datas.length; i < num; i++) {
+				memos[i].value = datas[i].val;
+				memos[i].style.width = datas[i].w;
+				memos[i].style.height = datas[i].h;
+			}
 		},
 		addView:function(){
 			document.getElementsByTagName("body")[0].appendChild(this.fragment);
@@ -95,6 +113,12 @@
 			var that = this;
 			this.area.querySelector(".backupBtn").addEventListener("click", function(e){
 				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.BACK_UP, that.area.getElementsByTagName("textarea")));
+			}, false);
+			this.area.querySelector(".saveBtn").addEventListener("click", function(e){
+				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.SAVE, that.area.getElementsByTagName("textarea")));
+			}, false);
+			this.area.querySelector(".reloadBtn").addEventListener("click", function(e){
+				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.RELOAD));
 			}, false);
 		},
 		_createEvent:function(name, data){

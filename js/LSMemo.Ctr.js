@@ -22,6 +22,7 @@
 	 * クラスメンバー
 	 */
 	LSMemo.Ctr.VISIBLE_CODE = 81;
+	LSMemo.Ctr.RELOAD_TEXT = "Do you reload all memo's ?";
 	
 	/**
 	 * インスタンスメソッド
@@ -57,15 +58,25 @@
 			  	this.model.insertMemoObj(null, null, null);
 			  	this.view.createMemo(i, null, null, null);
 			  }
-			};
+			}
 			this.setView();
 		},
 		setView:function(){
 			this.view.addView();
 			var that = this;
+			/* 
 			this.view.area.addEventListener(LSMemo.View.event.CHANGE, function(e){
 				var data = e.detail;
 				that.model.updateMemoObj.call(that.model, data.getAttribute(LSMemo.View.DATA_INDEX), data.value, data.style.width, data.style.height);
+			}, false);
+			*/
+			this.view.area.addEventListener(LSMemo.View.event.SAVE, function(e){
+				that.saveAllMemo.call(that, e.detail);
+			}, false);
+			this.view.area.addEventListener(LSMemo.View.event.RELOAD, function(e){
+				if(window.confirm(LSMemo.Ctr.RELOAD_TEXT)){
+					that.reloadAllMemo.call(that);
+				}
 			}, false);
 			this.view.area.addEventListener(LSMemo.View.event.BACK_UP, function(e){
 				var data = e.detail;
@@ -75,7 +86,7 @@
 				for (var i=0; i < num; i++) {
 					br = i !== (num-1) ? "\n\n\n" : "";
 					texts[i] = data[i].value + br;
-				};
+				}
 				that.backUpFile(texts.join(""));
 			}, false);
 			this.setKeyEvent();
@@ -93,6 +104,18 @@
 			chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
 				that.model.setConfig(LSMemo.Model.DISPLAY, that.view.setDisplay(), true);
 			});
+		},
+		saveAllMemo:function(textareas){
+			var txt = null;
+			for (var i=0, num = textareas.length; i < num; i++) {
+				txt = textareas[i];
+				this.model.updateMemoObj.call(this.model, txt.getAttribute(LSMemo.View.DATA_INDEX), txt.value, txt.style.width, txt.style.height);
+			}
+			this.model.setData(true);
+		},
+		reloadAllMemo:function(){
+			var that = this;
+			this.model.loadData(function(data){ that.view.setAllMemo(data[LSMemo.Model.KEY]); });
 		},
 		backUpFile:function(/*name,*/text){
 			var blobBuilder = new WebKitBlobBuilder();
@@ -124,6 +147,6 @@
 	};
 	
 	// インスタンスを生成する。
-	// var instance = new LSMemo.Ctr(option);
+	var instance = new LSMemo.Ctr();
 	
 })(this, this.document);

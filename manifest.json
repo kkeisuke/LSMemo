@@ -1,4 +1,4 @@
-{
+﻿{
 	"name": "LSMemo",
 	"version": "1.0",
 	"description": "localStorage Memo",
@@ -18,8 +18,9 @@
 		{
 			"matches": ["http://*/*","https://*/*"],
 			"css": ["css/LSMemo.css"],
-			"js": ["js/LSMemo.Model.js","js/LSMemo.View.js","js/LSMemo.Ctr.js","js/LSMemo.js"]
+			"js": ["js/LSMemo.Model.js","js/LSMemo.View.js","js/LSMemo.Ctr.js"]
 		}
-	]/* ,
+	],
+	"permissions": ["notifications"]/* ,
 	"permissions": ["unlimitedStorage"] */
 }

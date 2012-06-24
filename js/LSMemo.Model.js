@@ -68,23 +68,27 @@
 				return this.obj;
 			}
 		},
-		setData:function(){
+		setData:function(isNotify){
 			if(this.option.ls){
 				this.option.ls.setItem(LSMemo.Model.KEY, JSON.stringify(this.obj));
 			}else{
+				if(isNotify){ this.obj.isNotify = isNotify; }
 				chrome.extension.sendRequest(this.obj);
+				delete this.obj.isNotify;
 			}
 		},
 		getMemoObj:function(index){
 			return this.obj[LSMemo.Model.KEY][index];
 		},
-		updateMemoObj:function(index,val,w,h){
+		updateMemoObj:function(index,val,w,h,flg){
 			var memo = this.getMemoObj(index);
 			if(memo){
 				memo.val = val;
 				memo.w = w;
 				memo.h = h;
-				this.setData();
+				if(flg){
+					this.setData();
+				}
 			}
 		},
 		insertMemoObj:function(value,width,height){
@@ -93,7 +97,7 @@
 				val:value,
 				w:width,
 				h:height
-			}
+			};
 		},
 		setConfig:function(key, value, flg){
 			this.obj[key] = value;
