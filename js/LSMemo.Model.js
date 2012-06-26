@@ -11,8 +11,7 @@
 	LSMemo.Model = function(option){
 		this.obj = {
 			LSMemo:[],
-			numMemo:1,
-			display:"block"
+			numMemo:1
 		};
 		this.option = {
 			ls:null
@@ -26,7 +25,6 @@
 	 */
 	LSMemo.Model.KEY = "LSMemo";
 	LSMemo.Model.NUM_MEMO = "numMemo";
-	LSMemo.Model.DISPLAY = "display";
 	LSMemo.Model.event = {
 		LOADED_DATA:"loaded_data"
 	};
@@ -68,13 +66,11 @@
 				return this.obj;
 			}
 		},
-		setData:function(isNotify){
+		setData:function(){
 			if(this.option.ls){
 				this.option.ls.setItem(LSMemo.Model.KEY, JSON.stringify(this.obj));
 			}else{
-				if(isNotify){ this.obj.isNotify = isNotify; }
 				chrome.extension.sendRequest(this.obj);
-				delete this.obj.isNotify;
 			}
 		},
 		getMemoObj:function(index){

@@ -41,10 +41,7 @@
 			var that = this;
 			this.model = new LSMemo.Model();
 			this.model.loadData(function(data){
-				that.view = new LSMemo.View({
-					display:data[LSMemo.Model.DISPLAY] || "block"
-				});
-				that.setRequest.call(that);
+				that.view = new LSMemo.View();
 				that.setMemo.call(that, data[LSMemo.Model.NUM_MEMO] || 1);
 			});
 		},
@@ -64,20 +61,17 @@
 		setView:function(){
 			this.view.addView();
 			var that = this;
-			/* 
-			this.view.area.addEventListener(LSMemo.View.event.CHANGE, function(e){
-				var data = e.detail;
-				that.model.updateMemoObj.call(that.model, data.getAttribute(LSMemo.View.DATA_INDEX), data.value, data.style.width, data.style.height);
-			}, false);
-			*/
 			this.view.area.addEventListener(LSMemo.View.event.SAVE, function(e){
-				that.saveAllMemo.call(that, e.detail);
+				that.model.loadData(function(data){
+					that.saveAllMemo.call(that, e.detail);
+				});
 			}, false);
 			this.view.area.addEventListener(LSMemo.View.event.RELOAD, function(e){
 				if(window.confirm(LSMemo.Ctr.RELOAD_TEXT)){
 					that.reloadAllMemo.call(that);
 				}
 			}, false);
+			// TODO 中身をメソッド化する。
 			this.view.area.addEventListener(LSMemo.View.event.BACK_UP, function(e){
 				var data = e.detail;
 				var texts = [];
@@ -95,15 +89,9 @@
 			var that = this;
 			document.addEventListener("keydown", function(e){
 				if(e.ctrlKey && (e.keyCode === LSMemo.Ctr.VISIBLE_CODE)){
-					that.model.setConfig(LSMemo.Model.DISPLAY, that.view.setDisplay(), true);
+					that.view.setDisplay();
 				}
 			}, false);
-		},
-		setRequest:function(){
-			var that = this;
-			chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
-				that.model.setConfig(LSMemo.Model.DISPLAY, that.view.setDisplay(), true);
-			});
 		},
 		saveAllMemo:function(textareas){
 			var txt = null;
@@ -117,32 +105,10 @@
 			var that = this;
 			this.model.loadData(function(data){ that.view.setAllMemo(data[LSMemo.Model.KEY]); });
 		},
-		backUpFile:function(/*name,*/text){
+		backUpFile:function(text){
 			var blobBuilder = new WebKitBlobBuilder();
 			blobBuilder.append(text);
 			location.href = window.webkitURL.createObjectURL(blobBuilder.getBlob());
-			/* var hoge = 0;
-			var errorCallback = function(e){
-				console.log(hoge);
-				hoge++;
-				console.log(e);
-			};
-			
-			window.webkitRequestFileSystem(window.PERSISTENT, 1024*1024, function(fs){
-				console.log(fs)
-				fs.root.getFile(name + '.txt', {create:true}, function(fileEntry) {
-					fileEntry.createWriter(function(fileWriter) {
-						fileWriter.onwriteend = function(e){
-							console.log(fileWriter);
-							//window.alert("end");
-						};
-						fileWriter.onerror = function(e){
-							//window.alert("error");
-						};
-						fileWriter.write(blobBuilder.getBlob('text/plain'));
-					},errorCallback);
-				},errorCallback);
-			},errorCallback); */
 		}
 	};
 	

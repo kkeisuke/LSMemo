@@ -52,8 +52,10 @@
 		addEvent:function(){
 			var that = this;
 			this.optId.querySelector(".saveBtn").addEventListener("click", function(e){
-				that.setConfig.call(that, LSMemo.Model.NUM_MEMO);
-				that.model.setData();
+				that.model.loadData(function(){
+					that.setConfig.call(that, LSMemo.Model.NUM_MEMO);
+					that.model.setData();
+				});
 			}, false);
 		}
 	};

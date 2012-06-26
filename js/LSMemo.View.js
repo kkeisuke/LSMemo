@@ -12,7 +12,7 @@
 		this.fragment = null;
 		this.area = null;
 		this.option = {
-			display:"block"
+			display:"none"
 		};
 		this._extends(option);
 		this._init();
@@ -57,26 +57,6 @@
 			this.area.id = LSMemo.View.ID;
 			this.area.style.display = this.option.display;
 			this.area.insertAdjacentHTML("afterbegin", LSMemo.View.BTNS.join(""));
-			
-			/* var reader = new FileReader();
-			reader.onload = function(e){
-				console.log(e.target.result);
-			};
-			reader.readAsText(new File(chrome.extension.getURL("template/area.html")), "utf-8"); */
-			
-			/* window.webkitRequestFileSystem(window.TEMPORARY, 1024*1024, function(fs){
-				fs.root.getFile(chrome.extension.getURL("template/area.html"), {}, function(fileEntry){
-					console.log(fileEntry)
-					fileEntry.file(function(file){
-						var reader = new FileReader();
-						reader.onloadend = function(e){
-							console.log(e);
-						};
-						reader.readAsText(file, "utf-8");
-					});
-				});
-			}); */
-			
 			this.fragment.appendChild(this.area);
 		},
 		createMemo:function(index,val,w,h){
@@ -86,20 +66,12 @@
 			var style = memo.style;
 			if(w){ style.width = w; }
 			if(h){ style.height = h; }
-			/*
-			var that = this;
-			memo.addEventListener("change", function(){
-				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.CHANGE, memo));
-			}, false);
-			memo.addEventListener("mouseup", function(){
-				that.area.dispatchEvent(that._createEvent.call(that, LSMemo.View.event.CHANGE, memo));
-			}, false);
-			*/
 			this.area.appendChild(memo);
 		},
 		setAllMemo:function(datas){
 			var memos = this.area.getElementsByTagName("textarea");
-			for (var i = 0, num = datas.length; i < num; i++) {
+			var num = memos.length > datas.length ? datas.length : memos.length;
+			for (var i = 0; i < num; i++) {
 				memos[i].value = datas[i].val;
 				memos[i].style.width = datas[i].w;
 				memos[i].style.height = datas[i].h;
@@ -127,10 +99,7 @@
 			return evt;
 		},
 		setDisplay:function(){
-			var display = this.option.display === "block" ? "none" : "block";
-			this.area.style.display = display;
-			this.option.display = display;
-			return display;
+			this.area.style.display = this.area.style.display === "block" ? "none" : "block";
 		}
 	};
 	

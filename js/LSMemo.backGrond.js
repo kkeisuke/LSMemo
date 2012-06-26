@@ -45,13 +45,8 @@
 				if(request === LSMemo.BackGround.KEY){
 					sendResponse(JSON.parse(window.localStorage.getItem(LSMemo.BackGround.KEY)));
 				}else{
-					var isNotify = false;
-					if(request.isNotify){
-						isNotify = request.isNotify;
-						delete request.isNotify;
-					}
 					window.localStorage.setItem(LSMemo.BackGround.KEY, JSON.stringify(request));
-					if(isNotify){ that._showNotify.call(that); }
+					that._showNotify.call(that);
 				}
 			});
 		},
