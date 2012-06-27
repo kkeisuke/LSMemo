@@ -62,9 +62,7 @@
 			this.view.addView();
 			var that = this;
 			this.view.area.addEventListener(LSMemo.View.event.SAVE, function(e){
-				that.model.loadData(function(data){
-					that.saveAllMemo.call(that, e.detail);
-				});
+				that.saveAllMemo.call(that, e.detail);
 			}, false);
 			this.view.area.addEventListener(LSMemo.View.event.RELOAD, function(e){
 				if(window.confirm(LSMemo.Ctr.RELOAD_TEXT)){
@@ -99,7 +97,7 @@
 				txt = textareas[i];
 				this.model.updateMemoObj.call(this.model, txt.getAttribute(LSMemo.View.DATA_INDEX), txt.value, txt.style.width, txt.style.height);
 			}
-			this.model.setData(true);
+			this.model.setData();
 		},
 		reloadAllMemo:function(){
 			var that = this;
