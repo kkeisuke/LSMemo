@@ -21,8 +21,8 @@
 	 */
 	LSMemo.BackGround.KEY = "LSMemo";
 	LSMemo.BackGround.ICON = "../img/icon32.png";
-	LSMemo.BackGround.MSG = "all memo's are saved.";
-	LSMemo.BackGround.TIMEOUT = 3000;
+	LSMemo.BackGround.MSG = " memo's are saved.";
+	LSMemo.BackGround.TIMEOUT = 2000;
 	
 	/**
 	 * インスタンスメソッド
@@ -42,12 +42,14 @@
 		_setOnRequest:function(){
 			var that = this;
 			chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+				var len = 0;
 				if(request === LSMemo.BackGround.KEY){
 					sendResponse(JSON.parse(window.localStorage.getItem(LSMemo.BackGround.KEY)));
 				}else{
 					window.localStorage.setItem(LSMemo.BackGround.KEY, JSON.stringify(request));
-					if(request[LSMemo.BackGround.KEY].length > 0){
-						that._showNotify.call(that);
+					len = request[LSMemo.BackGround.KEY].length;
+					if(len > 0){
+						that._showNotify.call(that, len);
 					}
 				}
 			});
@@ -57,8 +59,8 @@
 				chrome.tabs.sendRequest(tab.id, {});
 			});
 		},
-		_showNotify:function(){
-			var notify = window.webkitNotifications.createNotification(LSMemo.BackGround.ICON, LSMemo.BackGround.KEY, LSMemo.BackGround.MSG);
+		_showNotify:function(num){
+			var notify = window.webkitNotifications.createNotification(LSMemo.BackGround.ICON, LSMemo.BackGround.KEY, num + LSMemo.BackGround.MSG);
 			notify.show();
 			window.setTimeout((function(notify){
 				return function(){

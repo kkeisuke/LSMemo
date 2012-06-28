@@ -43,6 +43,7 @@
 			this.model.loadData(function(data){
 				that.view = new LSMemo.View();
 				that.setMemo.call(that, data[LSMemo.Model.NUM_MEMO] || 1);
+				that.setRequest.call(that);
 			});
 		},
 		setMemo:function(num){
@@ -90,6 +91,12 @@
 					that.view.setDisplay();
 				}
 			}, false);
+		},
+		setRequest:function(){
+			var that = this;
+			chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
+				that.view.setDisplay();
+			});
 		},
 		saveAllMemo:function(textareas){
 			var txt = null;
