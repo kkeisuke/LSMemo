@@ -113,7 +113,7 @@
 		backUpFile:function(text){
 			var blobBuilder = new WebKitBlobBuilder();
 			blobBuilder.append(text);
-			location.href = window.webkitURL.createObjectURL(blobBuilder.getBlob());
+			location.href = window.webkitURL.createObjectURL(blobBuilder.getBlob("application/octet-stream"));
 		}
 	};
 	

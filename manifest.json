@@ -1,12 +1,18 @@
 ﻿{
 	"name": "LSMemo",
 	"version": "1.0",
+	"manifest_version": 2,
 	"description": "localStorage Memo",
 	"icons": {
 		"32": "img/icon32.png",
 		"48": "img/icon48.png",
 		"128": "img/icon128.png"
 	},
+	"web_accessible_resources":[
+		"img/icon32.png",
+		"img/icon48.png",
+		"img/icon128.png"
+	],
 	"browser_action":{
 		"default_icon": "img/icon128.png"
 	},
